@@ -9,8 +9,8 @@ namespace CarPark.Models
     public class Ticket
     {
         public DateTime DateIn { get; set; }
-        public DateTime DateOut { get; set; }
-        public decimal ParkingFee
+        public DateTime? DateOut { get; set; }
+        public decimal? ParkingFee
         {
             get
             {
@@ -28,14 +28,23 @@ namespace CarPark.Models
                 //}
                 //return fee;
 
-                TimeSpan ts = DateOut - DateIn;
+                if (DateOut == null)
+                {
+                    return null;
+                }
+                if (DateOut.Value < DateIn)
+                {
+                    throw new Exception("Invalid date");
+                }
+
+                TimeSpan ts = DateOut.Value - DateIn;
                 ts = ts.Add(TimeSpan.FromMinutes(-15));
                 if (ts.TotalMinutes <= 0)
                     return 0m;
                 else if (ts.TotalHours <= 3.0)
                     return 50m;
                 else
-                    return 50m + (((decimal)Math.Ceiling(ts.TotalHours) - 3) * 30);
+                    return 50m + ((decimal)Math.Ceiling(ts.TotalHours - 3) * 30m);
             }
         }
         public string PlateNo { get; set; }
