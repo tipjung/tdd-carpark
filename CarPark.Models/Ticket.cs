@@ -8,8 +8,11 @@ namespace CarPark.Models
 {
     public class Ticket
     {
+        public int Id { get; set; }
+        public string PlateNo { get; set; }
         public DateTime DateIn { get; set; }
         public DateTime? DateOut { get; set; }
+
         public decimal? ParkingFee
         {
             get
@@ -47,6 +50,5 @@ namespace CarPark.Models
                     return 50m + ((decimal)Math.Ceiling(ts.TotalHours - 3) * 30m);
             }
         }
-        public string PlateNo { get; set; }
     }
 }
